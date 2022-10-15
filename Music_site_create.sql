@@ -1,0 +1,46 @@
+CREATE TABLE IF NOT EXISTS Genres(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(40) UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS Executors(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(40) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Albums(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(40) NOT NULL,
+	"year of issue" SERIAL CHECK("year of issue" < 2023)
+);
+
+CREATE TABLE IF NOT EXISTS Tracks(
+	id SERIAL PRIMARY KEY,
+	album_id INTEGER NOT NULL REFERENCES Albums(id),
+	name VARCHAR(40) NOT NULL,
+	duration TIME NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Compilations(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(40) NOT NULL,
+	"year of issue" SERIAL CHECK("year of issue" < 2023)
+);
+
+CREATE TABLE IF NOT EXISTS GenresExecutors(
+	id SERIAL PRIMARY KEY,
+	genre_id INTEGER NOT NULL REFERENCES Genres(id),
+	executor_id INTEGER NOT NULL REFERENCES Executors(id)
+);
+
+CREATE TABLE IF NOT EXISTS ExecutorsAlbums(
+	id SERIAL PRIMARY KEY,
+	executor_id INTEGER NOT NULL REFERENCES Executors(id),
+	album_id INTEGER NOT NULL REFERENCES Albums(id)
+);
+
+CREATE TABLE IF NOT EXISTS TracksCompilations(
+	id SERIAL PRIMARY KEY,
+	track_id INTEGER NOT NULL REFERENCES Tracks(id),
+	compilation_id INTEGER NOT NULL REFERENCES Compilations(id)
+);
